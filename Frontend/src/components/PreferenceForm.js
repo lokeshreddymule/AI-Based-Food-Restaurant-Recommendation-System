@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './PreferenceForm.css';
 
-const API_URL = 'http://localhost:8000';
+const API_URL = 'https://ai-based-food-restaurant-recommendation.onrender.com';
+
 
 function PreferenceForm({ onSubmit, city }) {
   const [preferences, setPreferences] = useState({
