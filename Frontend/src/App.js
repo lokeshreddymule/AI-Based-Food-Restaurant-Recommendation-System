@@ -5,7 +5,7 @@ import PreferenceForm from './components/PreferenceForm';
 import RestaurantList from './components/RestaurantList';
 import './App.css';
 
-const API_URL = 'http://localhost:8000';
+const API_URL = 'https://ai-based-food-restaurant-recommendation.onrender.com';
 
 function App() {
   const [step, setStep]             = useState(1);
