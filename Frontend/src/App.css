@@ -1,0 +1,217 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===== BODY BACKGROUND (dark base) ===== */
+body {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #0b0f1a;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== APP WRAPPER ===== */
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* ===== DRIBBBLE-STYLE COLOR BLOBS ===== */
+.App::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle at 15% 25%, rgba(91,91,214,0.55), transparent 40%),
+    radial-gradient(circle at 85% 20%, rgba(255,77,109,0.50), transparent 40%),
+    radial-gradient(circle at 75% 80%, rgba(0,194,255,0.45), transparent 40%),
+    radial-gradient(circle at 25% 75%, rgba(138,255,193,0.45), transparent 40%);
+
+  filter: blur(60px) saturate(120%);
+  opacity: 0.9;
+}
+
+/* ===== HEADER ===== */
+.app-header {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 2rem 2rem 1.5rem;
+  text-align: center;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35);
+  position: relative;
+  z-index: 10;
+  animation: slideDown 0.6s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.app-header h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ffffff, #cfd8ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+  letter-spacing: -1px;
+}
+
+.app-header p {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.15rem;
+  font-weight: 300;
+}
+
+/* ===== MAIN CONTAINER ===== */
+.app-container {
+  flex: 1;
+  max-width: 1400px;
+  width: 100%;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== GLASS CARD (shared) ===== */
+.glass {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+}
+
+/* ===== LOADING ===== */
+.loading {
+  text-align: center;
+  padding: 5rem 2rem;
+  border-radius: 30px;
+}
+
+.spinner {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 1.5rem;
+  position: relative;
+}
+
+.spinner::before,
+.spinner::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+}
+
+.spinner::before {
+  width: 100%;
+  height: 100%;
+  border: 4px solid rgba(255, 255, 255, 0.15);
+}
+
+.spinner::after {
+  width: 100%;
+  height: 100%;
+  border: 4px solid transparent;
+  border-top-color: #fff;
+  border-right-color: #fff;
+  animation: spinRotate 1s linear infinite;
+}
+
+@keyframes spinRotate {
+  to { transform: rotate(360deg); }
+}
+
+.loading p {
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+/* ===== BUTTON ===== */
+.reset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 3rem auto;
+  padding: 1.1rem 2.3rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.reset-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-2px);
+}
+
+/* ===== FOOTER ===== */
+.app-footer {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(25px);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 1.5rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: auto;
+  position: relative;
+  z-index: 10;
+  font-weight: 300;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .app-header h1 { font-size: 2.5rem; }
+  .app-header p { font-size: 1rem; }
+  .app-container { margin: 1rem auto; }
+}
+
+@media (max-width: 480px) {
+  .app-header { padding: 1.5rem 1rem; }
+  .app-header h1 { font-size: 2rem; }
+}
