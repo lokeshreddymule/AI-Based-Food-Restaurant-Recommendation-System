@@ -21,16 +21,16 @@ load_dotenv()
 
 app = FastAPI(title="AI Food Recommendation API")
 
-# Allow local + deployed frontend
-FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
+# ✅ Correct CORS configuration
+ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "https://ai-based-food-restaurant-recommenda.vercel.app",
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",           # Local development
-        "https://*.vercel.app",            # All Vercel preview deployments
-        "*"                                # Allow all origins (temporary for testing)
-    ],
+    allow_origins=ALLOWED_ORIGINS,
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -49,7 +49,7 @@ client = pymongo.MongoClient(MONGODB_URI)
 db = client["food_recommendation"]
 restaurants_col = db["restaurants"]
 
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "")
+GOOGLE_API_KEY = os.getenv("Google_API_KEY", "")
 
 # ─────────────────────────────────────────────
 # MODELS
@@ -105,7 +105,6 @@ def get_famous_foods(city: str) -> List[dict]:
     all_results = list(restaurants_col.aggregate(pipeline))
 
     cuisine_map = {r["_id"]: r for r in all_results}
-
     MUST_SHOW = ["Biryani", "South Indian", "Haleem", "Andhra", "Cafe"]
 
     final = []
@@ -151,7 +150,6 @@ async def recommend_restaurants(request: RecommendationRequest):
     if not all_in_city:
         raise HTTPException(status_code=404, detail="No restaurants found")
 
-    # Area
     if request.area:
         area_filtered = [
             r for r in all_in_city
@@ -162,7 +160,6 @@ async def recommend_restaurants(request: RecommendationRequest):
     else:
         area_filtered = all_in_city
 
-    # Budget
     if request.budget_max >= 99999:
         budget_filtered = area_filtered
     else:
@@ -171,10 +168,8 @@ async def recommend_restaurants(request: RecommendationRequest):
             if request.budget_min <= r.get("cost_for_two",500) <= request.budget_max
         ] or area_filtered
 
-    # Taste
     taste_filtered = filter_by_taste(budget_filtered, request.taste_preference)
 
-    # Distance
     has_gps = request.latitude and request.longitude
     for r in taste_filtered:
         r["distance_km"] = calculate_distance(
@@ -183,13 +178,11 @@ async def recommend_restaurants(request: RecommendationRequest):
             r.get("longitude") or 78.4867,
         ) if has_gps else 0.0
 
-    final_list = taste_filtered
-
-    for r in final_list:
+    for r in taste_filtered:
         r["ai_score"] = calculate_ai_score(r, request)
 
-    final_list.sort(key=lambda x: x["ai_score"], reverse=True)
-    top_results = final_list[:20]
+    taste_filtered.sort(key=lambda x: x["ai_score"], reverse=True)
+    top_results = taste_filtered[:20]
 
     result = []
     for r in top_results:
